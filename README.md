@@ -28,8 +28,8 @@ where:
 
 To connect Kitura-CSRF middleware to the desired path use one of the `Router` methods, e.g.:
 
-    ```swift
+```swift
     router.all(<path>, middleware: CSRF())
-    ```
+```
 ## License
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE.txt).
