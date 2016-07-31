@@ -70,7 +70,7 @@ public class CSRF: RouterMiddleware {
             default: break
             }
         }
-        if let token = request.queryParameters["_scrf"] {
+        if let token = request.queryParameters["_csrf"] {
             return token
         }
         if let token = request.headers["csrf-token"] {
