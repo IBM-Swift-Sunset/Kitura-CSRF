@@ -47,6 +47,8 @@ class TestCSRF : XCTestCase {
             ("testNoToken", testNoToken),
             ("testCustomRetrieveToken", testCustomRetrieveToken),
             ("testIgnoredMethods", testIgnoredMethods),
+            ("testURLEncoded", testURLEncoded),
+            ("testQueryParameters", testQueryParameters),
         ]
     }
     
@@ -207,6 +209,78 @@ class TestCSRF : XCTestCase {
         }
     }
 
+    func testURLEncoded() {
+        performServerTest(router) { expectation in
+            self.performRequest("get", path: "qwer", callback: {response in
+                XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
+                guard (response != nil) else {
+                    return
+                }
+                XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
+                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                    return
+                }
+                let token = tokenHeaders[0]
+                let form = "type=form&_csrf=" + token + "&color=blue&name=Jane"
+                let (cookie, _) = CookieUtils.cookieFrom(response: response!, named: cookieDefaultName)
+                XCTAssertNotNil(cookie, "Cookie \(cookieDefaultName) wasn't found in the response.")
+                guard (cookie != nil) else {
+                    return
+                }
+                let cookieValue = cookie!.value
+                
+                self.performRequest("post", path: "qwer", callback: {response in
+                    XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
+                    guard (response != nil) else {
+                        return
+                    }
+                    XCTAssertEqual(response!.statusCode, HTTPStatusCode.noContent, "HTTP Status code was \(response!.statusCode)")
+                    expectation.fulfill()
+                }) { request in
+                    request.headers["Cookie"] = "\(cookieDefaultName)=\(cookieValue)"
+                    request.headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8"
+                    request.write(from: form)
+                }
+            })
+        }
+    }
+    
+    func testQueryParameters() {
+        performServerTest(router) { expectation in
+            self.performRequest("get", path: "qwer", callback: {response in
+                XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
+                guard (response != nil) else {
+                    return
+                }
+                XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
+                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                    return
+                }
+                let token = tokenHeaders[0]
+                let form = "type=form&_csrf=" + token + "&color=blue&name=Jane"
+                let (cookie, _) = CookieUtils.cookieFrom(response: response!, named: cookieDefaultName)
+                XCTAssertNotNil(cookie, "Cookie \(cookieDefaultName) wasn't found in the response.")
+                guard (cookie != nil) else {
+                    return
+                }
+                let cookieValue = cookie!.value
+                
+                self.performRequest("post", path: "qwer?" + form, callback: {response in
+                    XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
+                    guard (response != nil) else {
+                        return
+                    }
+                    XCTAssertEqual(response!.statusCode, HTTPStatusCode.noContent, "HTTP Status code was \(response!.statusCode)")
+                    expectation.fulfill()
+                }) { request in
+                    request.headers["Cookie"] = "\(cookieDefaultName)=\(cookieValue)"
+                    request.write(from: "swift=rocks")
+                }
+            })
+        }
+    }
+
+    
     static func setupRouter() -> Router {
         let router = Router()
         let sessionTestKey = "sessionKey"
