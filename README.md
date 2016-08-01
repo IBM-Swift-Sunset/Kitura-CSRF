@@ -31,5 +31,16 @@ To connect Kitura-CSRF middleware to the desired path use one of the `Router` me
 ```swift
     router.all(<path>, middleware: CSRF())
 ```
+
+Kitura-CSRF requires Kitura-Session middleware:
+
+```swift
+import KituraSession
+import KituraCSRF
+
+router.all(middleware: Session(secret: "Very very secret....."))
+router.all(<path>, middleware:  CSRF())
+
+```
 ## License
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE.txt).
