@@ -67,7 +67,7 @@ class TestCSRF : XCTestCase {
                 }
                 
                 XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
-                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                guard let tokenHeaders = response!.headers["csrf-token"], tokenHeaders.count > 0 else {
                     return
                 }
                 let token = tokenHeaders[0]
@@ -133,7 +133,7 @@ class TestCSRF : XCTestCase {
                 }
                 
                 XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
-                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                guard let tokenHeaders = response!.headers["csrf-token"],tokenHeaders.count > 0 else {
                     return
                 }
                 let token = tokenHeaders[0]
@@ -169,7 +169,7 @@ class TestCSRF : XCTestCase {
                 }
                 
                 XCTAssertNotNil(response!.headers["lalala-token"], "No CSRF header in the response")
-                guard let tokenHeaders = response!.headers["lalala-token"] where tokenHeaders.count > 0 else {
+                guard let tokenHeaders = response!.headers["lalala-token"], tokenHeaders.count > 0 else {
                     return
                 }
                 let token = tokenHeaders[0]
@@ -217,7 +217,7 @@ class TestCSRF : XCTestCase {
                     return
                 }
                 XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
-                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                guard let tokenHeaders = response!.headers["csrf-token"], tokenHeaders.count > 0 else {
                     return
                 }
                 let token = tokenHeaders[0]
@@ -253,7 +253,7 @@ class TestCSRF : XCTestCase {
                     return
                 }
                 XCTAssertNotNil(response!.headers["csrf-token"], "No CSRF header in the response")
-                guard let tokenHeaders = response!.headers["csrf-token"] where tokenHeaders.count > 0 else {
+                guard let tokenHeaders = response!.headers["csrf-token"], tokenHeaders.count > 0 else {
                     return
                 }
                 let token = tokenHeaders[0]
