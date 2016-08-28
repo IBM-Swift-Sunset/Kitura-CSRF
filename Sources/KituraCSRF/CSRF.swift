@@ -33,7 +33,7 @@ public class CSRF: RouterMiddleware {
         self.retrieveToken = retrieveToken ?? defaultRetrieveToken
     }
     
-    public func handle(request: RouterRequest, response: RouterResponse, next: () -> Void) throws {
+    public func handle(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         guard let session = request.session else {
             Log.error("Failed to check CSRF token - no session")
             next()
@@ -47,7 +47,7 @@ public class CSRF: RouterMiddleware {
             return
         }
 
-        guard let token = retrieveToken(request: request) else {
+        guard let token = retrieveToken(request) else {
             fail(response: response)
             return
         }
@@ -121,11 +121,7 @@ public class CSRF: RouterMiddleware {
             secret = sessionSecret.stringValue
         }
         else {
-            #if os(Linux)
-                secret = NSUUID().UUIDString
-            #else
-                secret = NSUUID().uuidString
-            #endif
+            secret = NSUUID().uuidString
             session["CSRFSecret"] = JSON(secret)
         }
         return secret

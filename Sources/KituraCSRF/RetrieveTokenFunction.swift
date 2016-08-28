@@ -16,4 +16,4 @@
 
 import Kitura
 
-public typealias RetrieveTokenFunction = (request: RouterRequest) -> String?
+public typealias RetrieveTokenFunction = (RouterRequest) -> String?

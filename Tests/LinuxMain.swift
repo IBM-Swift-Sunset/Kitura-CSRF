@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import KituraCSRFTestSuite
+@testable import KituraCSRFTests
 
 XCTMain([
     testCase(TestCSRF.allTests),
