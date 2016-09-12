@@ -33,15 +33,15 @@ public class CSRF: RouterMiddleware {
     
     /// Initialize an instance of `CSRF`.
     /// 
-    /// - Parameter ignoredMethods: An array of methods to be ignored by the CSRF middleware.
-    /// - Parameter retrieveToken: The custom callback to extract CSRF token from the request. 
-    ///                             If not set `defaultRetriveToken` is called.
+    /// - Parameter ignoredMethods: An array of HTTP methods to be ignored by the CSRF middleware.
+    /// - Parameter retrieveToken: The custom callback to extract a CSRF token from the request.
+    ///                             If not set, `CSRF.defaultRetrieveToken` is called.
     public init(ignoredMethods: [String] = ["GET", "HEAD", "OPTIONS"], retrieveToken: RetrieveTokenFunction?=nil) {
         self.ignoredMethods = ignoredMethods
         self.retrieveToken = retrieveToken ?? defaultRetrieveToken
     }
     
-    /// Handle an incoming request: verify the CSRF token in the request.
+    /// Handle an incoming request by verifying the CSRF token in the request.
     ///
     /// - Parameter request: The `RouterRequest` object used to get information
     ///                     about the request.
