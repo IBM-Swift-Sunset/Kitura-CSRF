@@ -22,17 +22,37 @@ import SwiftyJSON
 
 import Foundation
 
-public class CSRF: RouterMiddleware {    
+// MARK CSRF
+
+/// Cross-site request forgery prevention middleware.
+public class CSRF: RouterMiddleware {
 
     private let ignoredMethods: [String]
     
     private var retrieveToken: RetrieveTokenFunction!
     
+    /// Initialize an instance of `CSRF`.
+    /// 
+    /// - Parameter ignoredMethods: An array of methods to be ignored by the CSRF middleware.
+    /// - Parameter retrieveToken: The custom callback to extract CSRF token from the request. 
+    ///                             If not set `defaultRetriveToken` is called.
     public init(ignoredMethods: [String] = ["GET", "HEAD", "OPTIONS"], retrieveToken: RetrieveTokenFunction?=nil) {
         self.ignoredMethods = ignoredMethods
         self.retrieveToken = retrieveToken ?? defaultRetrieveToken
     }
     
+    /// Handle an incoming request: verify the CSRF token in the request.
+    ///
+    /// - Parameter request: The `RouterRequest` object used to get information
+    ///                     about the request.
+    /// - Parameter response: The `RouterResponse` object used to respond to the
+    ///                       request.
+    /// - Parameter next: The closure to invoke to enable the Router to check for
+    ///                  other handlers or middleware to work with this request.
+    ///
+    /// - Throws: Any `ErrorType`. If an error is thrown, processing of the request
+    ///          is stopped, the error handlers, if any are defined, will be invoked,
+    ///          and the user will get a response with a status code of 500.
     public func handle(request: RouterRequest, response: RouterResponse, next: @escaping () -> Void) throws {
         guard let session = request.session else {
             Log.error("Failed to check CSRF token - no session")
@@ -88,6 +108,11 @@ public class CSRF: RouterMiddleware {
         return nil
     }
     
+    /// Create a CSRF token.
+    ///
+    /// - Parameter request: The `RouterRequest` object used to get information
+    ///                     about the request.
+    /// - Returns: A String containing the created token.
     public func createToken(request: RouterRequest) -> String? {
         guard let session = request.session else {
             Log.error("Failed to create CSRF token - no session")

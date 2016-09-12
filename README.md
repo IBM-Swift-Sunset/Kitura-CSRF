@@ -7,7 +7,7 @@ Kitura CSRF prevention middleware
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
 
 ## Summary
-Kitura [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) prevention middleware.
+Kitura [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) prevention middleware.
 
 ## API
 

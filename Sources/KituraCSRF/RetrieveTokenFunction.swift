@@ -16,4 +16,7 @@
 
 import Kitura
 
+// MARK RetrieveTokenFunction
+
+/// Type alias for a function that retrieves a CSRF token from a `RouterRequest`.
 public typealias RetrieveTokenFunction = (RouterRequest) -> String?
