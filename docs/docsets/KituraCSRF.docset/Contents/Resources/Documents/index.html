@@ -8,6 +8,9 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
 
@@ -20,6 +23,12 @@
           KituraCSRF Docs
         </a>
          (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
       </p>
     
         <p class="header-col header-col--secondary">
@@ -48,6 +57,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:10KituraCSRF21RetrieveTokenFunctiona">RetrieveTokenFunction</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -55,32 +72,39 @@
         <section class="section">
           <div class="section-content">
             
-            <a href='#kitura-csrf' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='kitura-csrf'>Kitura-CSRF</h1>
+            <h1 id='kitura-csrf' class='heading'>Kitura-CSRF</h1>
 
 <p>Kitura CSRF prevention middleware</p>
 
-<p><a href="https://travis-ci.org/IBM-Swift/Kitura-CSRF"><img src="https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master" alt="Build Status - Master"></a>
-<img src="https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat" alt="Mac OS X">
+<p><a href="https://travis-ci.org/IBM-Swift/Kitura-CSRF"><img src="https://travis-ci.org/IBM-Swift/Kitura-CSRF.svg?branch=master" alt="Build Status"></a>
+<img src="https://img.shields.io/badge/os-macOS-green.svg?style=flat" alt="macOS">
 <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux">
-<img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2"></p>
-<a href='#summary' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='summary'>Summary</h2>
+<img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2">
+<a href="https://codecov.io/gh/IBM-Swift/Kitura-CSRF"><img src="https://codecov.io/gh/IBM-Swift/Kitura-CSRF/branch/master/graph/badge.svg" alt="codecov"></a></p>
+<h2 id='summary' class='heading'>Summary</h2>
 
 <p>Kitura <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29">CSRF</a> prevention middleware.</p>
-<a href='#api' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='api'>API</h2>
+<h2 id='api' class='heading'>API</h2>
 
 <p>To create an instance of Kitura-CSRF middleware use:</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">ignoredMethods</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">"GET"</span><span class="p">,</span> <span class="s">"HEAD"</span><span class="p">,</span> <span class="s">"OPTIONS"</span><span class="p">],</span> <span class="nv">retrieveToken</span><span class="p">:</span> <span class="kt">RetrieveTokenFunction</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span>
 </code></pre>
 
-<p>where:
-- <em>ignoredMethods</em> - an array of methods to be ignored by CSRF middleware. The default is <code>[&quot;GET&quot;,&quot;HEAD&quot;,&quot;OPTIONS&quot;]</code>.
-- <em>retrieveToken</em> - a custom callback to extract CSRF token from the request. If not set <code>defaultRetriveToken</code> is called. It looks for the token in this order:<br>
-    - request.body[<q>_csrf</q>] - if the body is URL Encoded
-    - request.queryParameters[<q>_csrf</q>]
-    - request.headers[<q>csrf-token</q>]
-    - request.headers[<q>xsrf-token</q>]
-    - request.headers[<q>x-csrf-token</q>]
-    - request.headers[<q>x-xsrf-token</q>]</p>
+<p>where:</p>
+
+<ul>
+<li><em>ignoredMethods</em> - an array of methods to be ignored by CSRF middleware. The default is <code>[&quot;GET&quot;,&quot;HEAD&quot;,&quot;OPTIONS&quot;]</code>.</li>
+<li><em>retrieveToken</em> - a custom callback to extract CSRF token from the request. If not set <code>defaultRetriveToken</code> is called. It looks for the token in this order:<br>
+
+<ul>
+<li>request.body[<q>_csrf</q>] - if the body is URL Encoded</li>
+<li>request.queryParameters[<q>_csrf</q>]</li>
+<li>request.headers[<q>csrf-token</q>]</li>
+<li>request.headers[<q>xsrf-token</q>]</li>
+<li>request.headers[<q>x-csrf-token</q>]</li>
+<li>request.headers[<q>x-xsrf-token</q>]</li>
+</ul></li>
+</ul>
 
 <p>To connect Kitura-CSRF middleware to the desired path use one of the <code>Router</code> methods, e.g.:</p>
 <pre class="highlight swift"><code>    <span class="n">router</span><span class="o">.</span><span class="nf">all</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">middleware</span><span class="p">:</span> <span class="kt">CSRF</span><span class="p">())</span>
@@ -94,7 +118,7 @@
 <span class="n">router</span><span class="o">.</span><span class="nf">all</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">middleware</span><span class="p">:</span>  <span class="kt">CSRF</span><span class="p">())</span>
 
 </code></pre>
-<a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
+<h2 id='license' class='heading'>License</h2>
 
 <p>This library is licensed under Apache 2.0. Full license text is available in <a href="LICENSE.txt">LICENSE</a>.</p>
 
@@ -105,8 +129,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2016-09-22)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2017-07-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
