@@ -1,10 +1,11 @@
 # Kitura-CSRF
 Kitura CSRF prevention middleware
 
-[![Build Status - Master](https://travis-ci.org/IBM-Swift/Kitura.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CSRF)
-![Mac OS X](https://img.shields.io/badge/os-Mac%20OS%20X-green.svg?style=flat)
+[![Build Status](https://travis-ci.org/IBM-Swift/Kitura-CSRF.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CSRF)
+![macOS](https://img.shields.io/badge/os-macOS-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
+[![codecov](https://codecov.io/gh/IBM-Swift/Kitura-CSRF/branch/master/graph/badge.svg)](https://codecov.io/gh/IBM-Swift/Kitura-CSRF)
 
 ## Summary
 Kitura [CSRF](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) prevention middleware.
@@ -17,6 +18,7 @@ To create an instance of Kitura-CSRF middleware use:
 public init(ignoredMethods: [String] = ["GET", "HEAD", "OPTIONS"], retrieveToken: RetrieveTokenFunction?=nil)
 ```
 where:
+
 - *ignoredMethods* - an array of methods to be ignored by CSRF middleware. The default is `["GET","HEAD","OPTIONS"]`.
 - *retrieveToken* - a custom callback to extract CSRF token from the request. If not set `defaultRetriveToken` is called. It looks for the token in this order:    
     - request.body["_csrf"] - if the body is URL Encoded
