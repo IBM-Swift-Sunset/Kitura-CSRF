@@ -12,7 +12,7 @@ We welcome contributions, and request you follow these guidelines.
 Please raise any bug reports on the issue tracker. Be sure to
 search the list to see if your issue has already been raised.
 
-A good bug report is one that make it easy for us to understand what you were
+A good bug report is one that makes it easy for us to understand what you were
 trying to do and what went wrong. Provide as much context as possible so we can try to recreate the issue.
 
 ### Contributor License Agreement
