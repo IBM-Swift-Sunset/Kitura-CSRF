@@ -1,4 +1,7 @@
 # Kitura-CSRF
+
+🚫 This project is no longer maintained.
+
 Kitura CSRF prevention middleware
 
 [![Build Status](https://travis-ci.org/IBM-Swift/Kitura-CSRF.svg?branch=master)](https://travis-ci.org/IBM-Swift/Kitura-CSRF)
